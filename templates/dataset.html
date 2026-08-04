@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Dataset Management</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  
+</head>
+
+<body>
+
+<header>
+    <h1>Battery Health Assessment & Dynamic Allocation System</h1>
+</header>
+
+<nav>
+    <a href="/">🏠 Home</a>
+    <a href="/dataset">📂 Dataset</a>
+    <a href="/vehicle_search">🚗 Vehicle Search</a>
+    <a href="#">🔋 Recommendation</a>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/graphs">📈 Graphs</a>
+    <a href="#">📄 Reports</a>
+</nav>
+
+<div class="container">
+
+    <h2>Battery Dataset</h2>
+
+    <form action="/upload_battery" method="POST" enctype="multipart/form-data">
+        <input type="file" name="battery_file">
+        <br><br>
+        <button type="submit">Upload Battery CSV</button>
+    </form>
+
+    {% if battery_info %}
+
+        <p style="color:green;"><b>✅ Battery Dataset Uploaded Successfully</b></p>
+
+        <p><b>File Name :</b> {{ battery_info.filename }}</p>
+
+        <p><b>Total Records :</b> {{ battery_info.records }}</p>
+
+    {% endif %}
+
+    <hr>
+
+    <h2>Battery Dataset Preview</h2>
+    <hr>
+
+<h2>🔍 Search Battery</h2>
+
+<input
+type="text"
+id="searchInput"
+class="form-control"
+placeholder="Enter Battery ID (Example: BAT-101)">
+
+<br>
+
+    {% if battery_table %}
+
+   <table id="batteryTable" class="table table-striped table-hover table-bordered">
+
+       <thead>
+
+<tr>
+    <th>Battery ID</th>
+    <th>Chemistry</th>
+    <th>SoC (%)</th>
+    <th>SoH (%)</th>
+    <th>Temperature (°C)</th>
+    <th>Status</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+        {% for row in battery_table %}
+
+        <tr>
+            <td>{{ row.battery_id }}</td>
+            <td>{{ row.chemistry }}</td>
+            <td>{{ row.state_of_charge_percent }}</td>
+            <td>{{ row.state_of_health_percent }}</td>
+            <td>{{ row.temperature_C }}</td>
+            <td>{{ row.station_status }}</td>
+        </tr>
+
+      {% endfor %}
+
+</tbody>
+
+</table>
+
+    <br>
+
+   <!-- Pagination automatic ga DataTables handle chestundi -->
+
+    {% endif %}
+
+    <hr>
+
+    <h2>Vehicle Dataset</h2>
+
+    <form action="/upload_vehicle" method="POST" enctype="multipart/form-data">
+        <input type="file" name="vehicle_file">
+        <br><br>
+        <button type="submit">Upload Vehicle CSV</button>
+    </form>
+
+    {% if vehicle_info %}
+
+        <p style="color:green;"><b>✅ Vehicle Dataset Uploaded Successfully</b></p>
+
+        <p><b>File Name :</b> {{ vehicle_info.filename }}</p>
+
+        <p><b>Total Records :</b> {{ vehicle_info.records }}</p>
+
+    {% endif %}
+
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<script>
+
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("keyup", function(){
+
+let value = this.value.toLowerCase();
+
+let rows = document.querySelectorAll("#batteryTable tbody tr");
+
+rows.forEach(function(row){
+
+let text = row.innerText.toLowerCase();
+
+if(text.includes(value)){
+
+row.style.display="";
+
+}else{
+
+row.style.display="none";
+
+}
+
+});
+
+});
+
+
+</script>
+
+</body>
+</html>

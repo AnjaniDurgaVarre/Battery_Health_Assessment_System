@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Battery Recommendation</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+<h1>Battery Health Assessment & Dynamic Allocation System</h1>
+
+</header>
+
+<nav>
+
+<a href="/">🏠 Home</a>
+
+<a href="/dataset">📂 Dataset</a>
+
+<a href="/vehicle_search">🚗 Vehicle Search</a>
+
+<a href="/recommendation">🔋 Recommendation</a>
+
+<a href="/dashboard">📊 Dashboard</a>
+
+<a href="/graphs">📈 Graphs</a>
+
+<a href="#">📄 Reports</a>
+
+</nav>
+
+<div class="container">
+
+<h2>🔋 Battery Recommendation</h2>
+
+<hr>
+
+{% if vehicle %}
+
+<h3>Vehicle Details</h3>
+
+<p><b>Request ID :</b> {{ vehicle.request_id }}</p>
+
+<p><b>Vehicle Type :</b> {{ vehicle.vehicle_type }}</p>
+
+<p><b>Required Range :</b> {{ vehicle.required_range_km }} km</p>
+
+<p><b>Minimum SOC :</b> {{ vehicle.minimum_acceptable_SOC_percent }}%</p>
+
+<hr>
+
+{% endif %}
+
+{% if battery %}
+
+<h3 style="color:green;">✅ Recommended Battery</h3>
+
+<table border="1" cellpadding="10">
+
+<tr>
+
+<th>Battery ID</th>
+
+<td>{{ battery.battery_id }}</td>
+
+</tr>
+
+<tr>
+
+<th>Chemistry</th>
+
+<td>{{ battery.chemistry }}</td>
+
+</tr>
+
+<tr>
+
+<th>SoC</th>
+
+<td>{{ battery.state_of_charge_percent }}%</td>
+
+</tr>
+
+<tr>
+
+<th>SoH</th>
+
+<td>{{ battery.state_of_health_percent }}%</td>
+
+</tr>
+
+<tr>
+
+<th>Temperature</th>
+
+<td>{{ battery.temperature_C }} °C</td>
+
+</tr>
+
+<tr>
+
+<th>Status</th>
+
+<td>{{ battery.station_status }}</td>
+
+</tr>
+<tr>
+
+<th>⭐ Priority Score</th>
+
+<td>{{ "%.2f"|format(battery.priority_score) }}</td>
+
+</tr>
+
+</table>
+
+<br>
+
+<h3>Recommendation Reason</h3>
+
+<p>✔ Battery is Available</p>
+
+<p>✔ SoC satisfies vehicle requirement</p>
+
+<p>✔ SoH is above 80%</p>
+
+<p>✔ Temperature is below 40°C</p>
+
+<p>⭐ Highest Battery Priority Score</p>
+
+<p>✔ Best Overall Battery Health</p>
+<br><br>
+
+<a href="/allocate_battery">
+    <button type="button">
+        🔋 Allocate Battery
+    </button>
+</a>
+
+{% else %}
+
+<h3 style="color:red;">
+
+❌ No Suitable Battery Found
+
+</h3>
+
+{% endif %}
+
+</div>
+
+</body>
+
+</html>

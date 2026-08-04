@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Vehicle Search</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<header>
+    <h1>Battery Health Assessment & Dynamic Allocation System</h1>
+</header>
+
+<nav>
+    <a href="/">🏠 Home</a>
+    <a href="/dataset">📂 Dataset</a>
+    <a href="/vehicle_search">🚗 Vehicle Search</a>
+    <a href="#">🔋 Recommendation</a>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/graphs">📈 Graphs</a>
+    <a href="#">📄 Reports</a>
+</nav>
+
+<div class="container">
+
+    <h2>🚗 Vehicle Search</h2>
+
+    <form action="/search_vehicle" method="POST">
+
+        <label><b>Enter Request ID</b></label>
+
+        <br><br>
+
+        <input
+            type="text"
+            name="vehicle_id"
+            placeholder="Example : REQ-001"
+            style="width:300px; padding:10px;"
+            required>
+
+        <br><br>
+
+        <button type="submit">Search Vehicle</button>
+
+    </form>
+
+    {% if result %}
+
+    <hr>
+
+    <h2>🚗 Vehicle Details</h2>
+
+    <table border="1" cellpadding="10" cellspacing="0">
+
+        <tr>
+            <th>Request ID</th>
+            <td>{{ result.request_id }}</td>
+        </tr>
+
+        <tr>
+            <th>Arrival Time</th>
+            <td>{{ result.arrival_time }}</td>
+        </tr>
+
+        <tr>
+            <th>Vehicle Type</th>
+            <td>{{ result.vehicle_type }}</td>
+        </tr>
+
+        <tr>
+            <th>Required Range</th>
+            <td>{{ result.required_range_km }} km</td>
+        </tr>
+
+        <tr>
+            <th>Load Category</th>
+            <td>{{ result.load_category }}</td>
+        </tr>
+
+        <tr>
+            <th>Priority</th>
+            <td>{{ result.priority }}</td>
+        </tr>
+
+        <tr>
+            <th>Minimum SOC</th>
+            <td>{{ result.minimum_acceptable_SOC_percent }} %</td>
+        </tr>
+
+        <tr>
+            <th>Maximum Wait Time</th>
+            <td>{{ result.maximum_wait_time_min }} min</td>
+        </tr>
+
+    </table>
+
+    <br>
+
+    <a href="/recommendation">
+    <button type="button">🔋 Recommend Best Battery</button>
+</a>
+    {% elif result is not none %}
+
+    <hr>
+
+    <h3 style="color:red;">❌ Request ID not found.</h3>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

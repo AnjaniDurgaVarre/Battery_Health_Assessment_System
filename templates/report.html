@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Report</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<header>
+    <h1>Battery Health Assessment & Dynamic Allocation System</h1>
+</header>
+
+<nav>
+    <a href="/">🏠 Home</a>
+    <a href="/dataset">📂 Dataset</a>
+    <a href="/vehicle_search">🚗 Vehicle Search</a>
+    <a href="/recommendation">🔋 Recommendation</a>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/graphs">📈 Graphs</a>
+    <a href="/reports">📄 Reports</a>
+</nav>
+
+<div class="container mt-4">
+
+<h2 class="text-center mb-4">
+📄 Battery Allocation Report
+</h2>
+
+<div class="card shadow p-4">
+
+<h4>Battery Summary</h4>
+
+<table class="table table-bordered">
+
+<tr>
+    <th>Total Batteries</th>
+    <td>{{ total }}</td>
+</tr>
+
+<tr>
+    <th>Available Batteries</th>
+    <td>{{ available }}</td>
+</tr>
+
+<tr>
+    <th>Allocated Batteries</th>
+    <td>{{ allocated }}</td>
+</tr>
+
+<tr>
+    <th>Maintenance Batteries</th>
+    <td>{{ maintenance }}</td>
+</tr>
+
+</table>
+
+<hr>
+
+<h4>Vehicle Details</h4>
+
+{% if vehicle %}
+
+<table class="table table-bordered">
+
+<tr>
+<th>Vehicle ID</th>
+<td>{{ vehicle.request_id }}</td>
+</tr>
+
+<tr>
+<th>Required SoC (%)</th>
+<td>{{ vehicle.minimum_acceptable_SOC_percent }}</td>
+</tr>
+
+</table>
+
+{% else %}
+
+<p>No Vehicle Selected.</p>
+
+{% endif %}
+
+<hr>
+
+<h4>Allocated Battery Details</h4>
+
+{% if battery %}
+
+<table class="table table-bordered">
+
+<tr>
+<th>Battery ID</th>
+<td>{{ battery.battery_id }}</td>
+</tr>
+
+<tr>
+<th>State of Charge (%)</th>
+<td>{{ battery.state_of_charge_percent }}</td>
+</tr>
+
+<tr>
+<th>State of Health (%)</th>
+<td>{{ battery.state_of_health_percent }}</td>
+</tr>
+
+<tr>
+<th>Temperature (°C)</th>
+<td>{{ battery.temperature_C }}</td>
+</tr>
+
+<tr>
+<th>Status</th>
+<td>{{ battery.station_status }}</td>
+</tr>
+
+<tr>
+<th>⭐ Priority Score</th>
+<td>{{ "%.2f"|format(battery.priority_score) }}</td>
+</tr>
+</table>
+
+<div class="alert alert-success">
+
+<strong>Recommendation:</strong>
+
+Battery Successfully Allocated.
+
+<br><br>
+
+<strong>Reason:</strong>
+
+<ul>
+
+<li>Battery is Available</li>
+
+<li>SoC satisfies vehicle requirement</li>
+
+<li>SoH is above 80%</li>
+
+<li>Temperature is below 40°C</li>
+
+<li>⭐ Highest Battery Priority Score</li>
+
+</ul>
+
+</div>
+
+{% else %}
+
+<div class="alert alert-danger">
+
+No Suitable Battery Available.
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</body>
+</html>
